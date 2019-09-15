@@ -6,13 +6,13 @@ import com.perseus.pus.dto.UserDTO;
 import com.perseus.pus.model.User;
 
 public interface UserService {
-    Response<?> saveUser(UserDTO user);
+    Response<UserDTO> saveUser(UserDTO user);
 
-    Response<?> findById(Long userId);
+    Response<UserDTO> findById(Long userId);
 
-    Response<?> deleteUser(Long userId);
+    Response<UserDTO> deleteUser(Long userId);
 
-    Response<?> findUserByName(String name);
+    Response<UserDTO> findUserByName(String name);
 
-    Response<?> updateContact(UserDTO userDTO, Long userId);
+    Response<UserDTO> updateContact(UserDTO userDTO, Long userId);
 }

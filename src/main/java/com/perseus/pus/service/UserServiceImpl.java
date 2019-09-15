@@ -18,42 +18,62 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    /**
+     *
+     * @param userDTO
+     * @return
+     */
     @Override
-    public Response<?> saveUser(UserDTO userDTO) {
+    public Response<UserDTO> saveUser(UserDTO userDTO) {
         User user = mapUserDTOToUserEntity(userDTO, userDTO.getId());
         user = userRepository.save(user);
-        return new Response<>(true, "User data saved successfully.", mapEntityToDTO(user));
+        return new Response<UserDTO>(true, "User data saved successfully.", mapEntityToDTO(user));
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
     @Override
-    public Response<?> findById(Long userId) {
+    public Response<UserDTO> findById(Long userId) {
 
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            return new Response<>(true, "User with id " + userId + " retrieved successfully.", mapEntityToDTO(user.get()));
+            return new Response<UserDTO>(true, "User with id " + userId + " retrieved successfully.", mapEntityToDTO(user.get()));
         } else {
-            return new Response<>(true, "User with id " + userId + " not found.", null);
+            return new Response<UserDTO>(true, "User with id " + userId + " not found.", null);
         }
 
 
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
     @Override
-    public Response<?> deleteUser(Long userId) {
+    public Response<UserDTO> deleteUser(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             userRepository.delete(user.get());
-            return new Response<>(true, "User with id " + userId + " Deleted Successfully.", null);
+            return new Response<UserDTO>(true, "User with id " + userId + " Deleted Successfully.", null);
         } else {
-            return new Response<>(false, "User with id " + userId + " Not found.", null);
+            return new Response<UserDTO>(false, "User with id " + userId + " Not found.", null);
         }
 
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     @Override
-    public Response<?> findUserByName(String name) {
+    public Response<UserDTO> findUserByName(String name) {
         if (name != null && name.trim().length() == 0)
-            return new Response<>(false, "Name must contain characters.", null);
+            return new Response<UserDTO>(false, "Name must contain characters.", null);
         String[] names = name.trim().split(" ");
         String firstName = names[0].trim();
 
@@ -66,20 +86,26 @@ public class UserServiceImpl implements UserService {
         //  u.setId(id);
         Optional<User> user = userRepository.findOne(Example.of(u));
         if (user.isPresent()) {
-            return new Response<>(true, "User with name " + name + " retrieved successfully.", mapEntityToDTO(user.get()));
+            return new Response<UserDTO>(true, "User with name " + name + " retrieved successfully.", mapEntityToDTO(user.get()));
         } else {
-            return new Response<>(true, "User with name " + name + " not found.", null);
+            return new Response<UserDTO>(true, "User with name " + name + " not found.", null);
         }
     }
 
+    /**
+     *
+     * @param userDTO
+     * @param userId
+     * @return
+     */
     @Override
-    public Response<?> updateContact(UserDTO userDTO, Long userId) {
+    public Response<UserDTO> updateContact(UserDTO userDTO, Long userId) {
         User user = mapUserDTOToUserEntity(userDTO, userId);
         if (user == null)
-            return new Response<>(false, "User with id " + userId + " Not found.", null);
+            return new Response<UserDTO>(false, "User with id " + userId + " Not found.", null);
 
         user = userRepository.save(user);
-        return new Response<>(true, "User Contact data update successfully..", null);
+        return new Response<UserDTO>(true, "User Contact data update successfully..", null);
     }
 
     private User mapUserDTOToUserEntity(UserDTO userDTO, Long userId) {
